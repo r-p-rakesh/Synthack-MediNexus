@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chronic Diseases - MediNexus AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: rgba(15, 32, 39, 0.95);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(0.5px);
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      width: 120px;
+      object-fit: cover;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00e5ff;
+    }
+
+    .main-content {
+      padding-top: 100px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .diseases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .disease-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .disease-card:hover {
+      transform: translateY(-10px);
+      background: rgba(0, 229, 255, 0.1);
+    }
+
+    .disease-icon {
+      font-size: 2.5rem;
+      color: #00e5ff;
+      margin-bottom: 1rem;
+    }
+
+    .disease-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #00e5ff;
+    }
+
+    .disease-description {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .symptoms-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .symptoms-list li {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .symptoms-list li::before {
+      content: "•";
+      color: #00e5ff;
+      margin-right: 0.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.2);
+      margin-top: auto;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .diseases-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <a href="{{ url_for('home') }}" class="logo">
+        <img src="static/output-onlinepngtools.png" alt="MediNexus Logo"/>
+      </a>
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('diagnose') }}">Diagnose</a>
+        <a href="/diseases">Diseases</a>
+        <a href="/signin">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="hero">
+      <div class="container">
+        <h1>Chronic Diseases</h1>
+        <p>Learn about common chronic conditions and their symptoms</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="diseases-grid">
+        <!-- Disease Cards Start -->
+
+        <div class="disease-card" data-aos="fade-up">
+          <div class="disease-icon"><i class="fas fa-vial"></i></div>
+          <h3 class="disease-title">Diabetes</h3>
+          <p class="disease-description">A chronic condition that affects how your body turns food into energy.</p>
+          <ul class="symptoms-list">
+            <li>Increased thirst and urination</li>
+            <li>Fatigue and weakness</li>
+            <li>Blurred vision</li>
+            <li>Slow-healing wounds</li>
+            <li>Unexplained weight loss</li>
+          </ul>
+        </div>
+
+        <div class="disease-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="disease-icon"><i class="fas fa-heartbeat"></i></div>
+          <h3 class="disease-title">Heart Disease</h3>
+          <p class="disease-description">A range of conditions that affect your heart's structure and function.</p>
+          <ul class="symptoms-list">
+            <li>Chest pain or discomfort</li>
+            <li>Shortness of breath</li>
+            <li>Irregular heartbeat</li>
+            <li>Swelling in legs and feet</li>
+            <li>Fatigue and weakness</li>
+          </ul>
+        </div>
+
+        <div class="disease-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="disease-icon"><i class="fas fa-kidneys"></i></div>
+          <h3 class="disease-title">Kidney Disease</h3>
+          <p class="disease-description">A condition where kidneys are damaged and can't filter blood properly.</p>
+          <ul class="symptoms-list">
+            <li>Swelling in legs and ankles</li>
+            <li>Fatigue and weakness</li>
+            <li>Changes in urination</li>
+            <li>High blood pressure</li>
+            <li>Loss of appetite</li>
+          </ul>
+        </div>
+
+        <div class="disease-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="disease-icon"><i class="fas fa-female"></i></div>
+          <h3 class="disease-title">Breast Cancer</h3>
+          <p class="disease-description">A type of cancer that forms in the cells of the breasts.</p>
+          <ul class="symptoms-list">
+            <li>Lump in the breast</li>
+            <li>Changes in breast shape</li>
+            <li>Nipple discharge</li>
+            <li>Skin changes on breast</li>
+            <li>Breast pain</li>
+          </ul>
+        </div>
+
+        <div class="disease-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="disease-icon"><i class="fas fa-lungs"></i></div>
+          <h3 class="disease-title">Asthma</h3>
+          <p class="disease-description">A condition in which airways narrow and swell and produce extra mucus.</p>
+          <ul class="symptoms-list">
+            <li>Shortness of breath</li>
+            <li>Chest tightness</li>
+            <li>Wheezing</li>
+            <li>Coughing</li>
+            <li>Trouble sleeping</li>
+          </ul>
+        </div>
+
+        <div class="disease-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="disease-icon"><i class="fas fa-bone"></i></div>
+          <h3 class="disease-title">Arthritis</h3>
+          <p class="disease-description">Inflammation of one or more joints, causing pain and stiffness.</p>
+          <ul class="symptoms-list">
+            <li>Joint pain</li>
+            <li>Stiffness</li>
+            <li>Swelling</li>
+            <li>Reduced range of motion</li>
+            <li>Redness around joints</li>
+          </ul>
+        </div>
+
+        <!-- Disease Cards End -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 MediNexus AI. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true
+    });
+  </script>
+</body>
+</html>

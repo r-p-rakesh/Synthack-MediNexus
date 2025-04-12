@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🩺 Kidney Disease Predictor - MediNexus AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #ffffff;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header {
+            background-color: rgba(15, 32, 39, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 80px;
+            width: 160px;
+            object-fit: cover;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00e5ff;
+        }
+
+        .form-section {
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        form:hover {
+            transform: translateY(-10px);
+            background-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #f0f0f0;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 3px rgba(0, 229, 255, 0.3);
+        }
+
+        input.error {
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.5);
+        }
+
+        .error-message {
+            color: #e63946;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        button {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            background-color: #00e5ff;
+            color: #000;
+            box-shadow: 0 0 5px #00e5ff, 0 0 20px #00e5ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        button.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #000;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        button.loading span {
+            opacity: 0;
+        }
+
+        #result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            font-size: 1.1rem;
+            text-align: center;
+            display: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #result.success {
+            color: #00e5ff;
+        }
+
+        #result.error {
+            color: #e63946;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background-color: #111;
+            color: #aaa;
+            margin-top: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            form {
+                padding: 2rem;
+            }
+
+            button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+     <header>
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">
+        <img src="static/output-onlinepngtools.png" alt="MediNexus Logo" />
+      </a>
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('diagnose') }}">Diagnose</a>
+        <a href="/diseases">Diseases</a>
+        <a href="/signin">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+    <section class="form-section">
+        <h1 data-aos="fade-up">🩺 Kidney Disease Predictor</h1>
+        <form id="prediction-form">
+            {% for col in columns %}
+            <div class="form-group" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <label for="{{ col }}">{{ col.replace('_', ' ').title() }}:</label>
+                <input type="text" id="{{ col }}" name="{{ col }}" required placeholder="Enter {{ col.replace('_', ' ').title() }}">
+                <div class="error-message" id="{{ col }}-error">Please enter a valid number.</div>
+            </div>
+            {% endfor %}
+            <button type="submit"  id="submit-btn" data-aos="fade-up"><span>Predict</span></button>
+        </form>
+        <div id="result" data-aos="fade-up"></div>
+    </section>
+
+    <footer>
+        <p>© 2025 MediNexus AI. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+
+        // Simulated kidney disease prediction
+        const simulatePrediction = (inputs) => {
+            // Demo: Predict CKD if Creatinine > 1.2 or Blood_Urea > 40
+            const creatinine = parseFloat(inputs['Creatinine'] || 0);
+            const bloodUrea = parseFloat(inputs['Blood_Urea'] || 0);
+            if (creatinine > 1.2 || bloodUrea > 40) {
+                return "Chronic Kidney Disease: Likely";
+            }
+            return "Chronic Kidney Disease: Unlikely";
+        };
+
+        document.getElementById('prediction-form').addEventListener('submit', async function(e) {
+            e.preventDefault();  // Prevent default form submission
+            let isValid = true;
+            const inputs = document.querySelectorAll('input[type="text"]');
+            const button = document.getElementById('submit-btn');
+            const resultDiv = document.getElementById('result');
+
+            // Validate inputs
+            const inputValues = {};
+            inputs.forEach(input => {
+                const value = input.value.trim();
+                const errorDiv = document.getElementById(`${input.id}-error`);
+                
+                if (value === '') {
+                    input.classList.add('error');
+                    errorDiv.style.display = 'block';
+                    isValid = false;
+                } else {
+                    input.classList.remove('error');
+                    errorDiv.style.display = 'none';
+                    
+                    // Convert values based on input type
+                    if (input.id === 'age' || 
+                        input.id === 'blood_pressure' || 
+                        input.id === 'specific_gravity' || 
+                        input.id === 'albumin' || 
+                        input.id === 'sugar' || 
+                        input.id === 'blood_glucose_random' || 
+                        input.id === 'blood_urea' || 
+                        input.id === 'serum_creatinine' || 
+                        input.id === 'sodium' || 
+                        input.id === 'potassium' || 
+                        input.id === 'hemoglobin' || 
+                        input.id === 'packed_cell_volume' || 
+                        input.id === 'white_blood_cell_count' || 
+                        input.id === 'red_blood_cell_count') {
+                        // Convert to float for numerical values
+                        inputValues[input.id] = parseFloat(value);
+                    } else if (input.id === 'red_blood_cells' || 
+                              input.id === 'pus_cell' || 
+                              input.id === 'pus_cell_clumps' || 
+                              input.id === 'bacteria' || 
+                              input.id === 'hypertension' || 
+                              input.id === 'diabetes_mellitus' || 
+                              input.id === 'coronary_artery_disease' || 
+                              input.id === 'appetite' || 
+                              input.id === 'pedal_edema' || 
+                              input.id === 'anemia') {
+                        // Convert to integer (0 or 1) for categorical values
+                        inputValues[input.id] = value.toLowerCase() === 'yes' ? 1 : 0;
+                    }
+                }
+            });
+
+            if (!isValid) return;
+
+            // Show loading state
+            button.classList.add('loading');
+            button.disabled = true;
+            resultDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/predict_kidney', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(inputValues)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Network response was not ok');
+                }
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Create a more detailed result display
+                let resultHTML = `
+                    <h3>Prediction Result</h3>
+                    <p>${data.prediction === 1 ? 'Kidney Disease Detected' : 'No Kidney Disease'}</p>
+                    <p>Confidence: ${(data.confidence * 100).toFixed(2)}%</p>
+                    <p>Model Accuracy: ${(data.accuracy * 100).toFixed(2)}%</p>
+                    <h4>Key Factors:</h4>
+                    <ul>
+                `;
+                
+                data.feature_contributions.forEach(feature => {
+                    resultHTML += `
+                        <li>
+                            <strong>${feature.feature}</strong>: 
+                            Impact: ${feature.value.toFixed(4)}
+                            <br>
+                            <small>${feature.description}</small>
+                        </li>
+                    `;
+                });
+                
+                resultHTML += '</ul>';
+                
+                resultDiv.innerHTML = resultHTML;
+                resultDiv.classList.remove('error', 'success');
+                resultDiv.classList.add(data.prediction === 1 ? 'error' : 'success');
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.textContent = 'An error occurred while making the prediction: ' + error.message;
+                resultDiv.classList.remove('success');
+                resultDiv.classList.add('error');
+                resultDiv.style.display = 'block';
+            } finally {
+                // Reset button
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        });
+
+        // Real-time validation
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                const value = this.value.trim();
+                const errorDiv = document.getElementById(`${this.id}-error`);
+                
+                if (!/^-?\d*\.?\d*$/.test(value) && value !== '') {
+                    this.classList.add('error');
+                    errorDiv.style.display = 'block';
+                } else {
+                    this.classList.remove('error');
+                    errorDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

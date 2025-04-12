@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediNexus AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      color: #ffffff;
+    }
+
+    header {
+      background-color: rgba(15, 32, 39, 0.95);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(0.5px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      width: 120px;
+      object-fit: cover !important;
+    }
+
+    nav a {
+      color: #fff;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #00e5ff;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: #f0f0f0;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-glow {
+      background-color: #00e5ff;
+      color: #000;
+      box-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #00e5ff;
+      color: #00e5ff;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00e5ff;
+    }
+
+    .section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, background 0.3s ease;
+      max-width: 300px;
+      flex: 1 1 300px;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      background-color: rgba(0, 229, 255, 0.1);
+    }
+
+    .card img {
+      height: 50px;
+      margin-bottom: 1rem;
+      filter: invert(100%);
+    }
+
+    footer {
+      padding: 2rem;
+      text-align: center;
+      background-color: #111;
+      color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+      .features {
+        flex-direction: column;
+      }
+
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+
+      .btn {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">
+        <img src="static/output-onlinepngtools.png" alt="MediNexus Logo" />
+      </a>
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('diagnose') }}">Diagnose</a>
+        <a href="/diseases">Diseases</a>
+        <a href="/signin">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <video autoplay muted loop playsinline class="hero-video">
+      <source src="static/hero.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="hero-content" data-aos="fade-up">
+      <h1>AI That Understands Healthcare</h1>
+      <p>Empowering your diagnosis with real-time, explainable intelligence</p>
+      <div class="hero-buttons">
+        <a href="{{ url_for('diagnose') }}" class="btn btn-glow">Get Started</a>
+        <button class="btn btn-outline">Watch Demo</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section features-section">
+    <h2 data-aos="fade-down">What We Offer</h2>
+    <div class="features">
+      <div class="card" data-aos="fade-up" data-aos-delay="100">
+        <img src="https://img.icons8.com/ios-filled/50/upload.png" />
+        <h3>Upload Patient Data</h3>
+        <p>Upload lab results, symptoms, or EHR files</p>
+      </div>
+      <div class="card" data-aos="fade-up" data-aos-delay="200">
+        <img src="https://img.icons8.com/ios-filled/50/line-chart.png" />
+        <h3>Real-Time Predictions</h3>
+        <p>Instant disease risk insights from our AI models</p>
+      </div>
+      <div class="card" data-aos="fade-up" data-aos-delay="300">
+        <img src="https://img.icons8.com/ios-filled/50/brain.png" />
+        <h3>Explainability</h3>
+        <p>Visual and textual reasoning, not black box AI</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section why-us">
+    <h2 data-aos="fade-up">Why MediNexus?</h2>
+    <p data-aos="fade-up" data-aos-delay="100">Precision + Transparency in Every Diagnosis</p>
+    <div class="features">
+      <div class="card" data-aos="fade-right">
+        <img src="https://img.icons8.com/ios-filled/50/artificial-intelligence.png" />
+        <h3>Multi-Disease AI</h3>
+        <p>Supports Diabetes, Heart Disease, Liver and more</p>
+      </div>
+      <div class="card" data-aos="fade-left">
+        <img src="https://img.icons8.com/ios-filled/50/split-transaction.png" />
+        <h3>Counterfactuals</h3>
+        <p>Change parameters and see how diagnosis evolves</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section final-cards">
+    <h2 data-aos="fade-up">Trusted by Professionals</h2>
+    <div class="features">
+      <div class="card" data-aos="zoom-in" data-aos-delay="100">
+        <img src="https://img.icons8.com/ios-filled/50/doctor-male.png" />
+        <h3>Doctors</h3>
+        <p>Make faster, more informed decisions</p>
+      </div>
+      <div class="card" data-aos="zoom-in" data-aos-delay="200">
+        <img src="https://img.icons8.com/ios-filled/50/hospital-room.png" />
+        <h3>Hospitals</h3>
+        <p>Streamline diagnostics and treatment plans</p>
+      </div>
+      <div class="card" data-aos="zoom-in" data-aos-delay="300">
+        <img src="https://img.icons8.com/ios-filled/50/health-book.png" />
+        <h3>Health Researchers</h3>
+        <p>Leverage transparent insights from medical data</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 MediNexus AI. All Rights Reserved.
+  </footer>
+
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>

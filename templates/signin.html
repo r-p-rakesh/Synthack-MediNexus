@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - MediNexus AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+        
+
+      header {
+            background-color: rgba(15, 32, 39, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(0.5px);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  width: 120px;
+  object-fit: cover !important;
+}
+
+        nav a {
+            color: #fff;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00e5ff;
+        }
+
+        .signin-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .signin-form {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #f0f0f0;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #00e5ff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background-color: #111;
+            color: #aaa;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+     <header>
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">
+        <img src="static/output-onlinepngtools.png" alt="MediNexus Logo" />
+      </a>
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('diagnose') }}">Diagnose</a>
+        <a href="/diseases">Diseases</a>
+        <a href="/signin">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+    <section class="signin-section">
+        <h1 data-aos="fade-up">Sign In</h1>
+        <form class="signin-form" action="{{ url_for('home') }}" method="get" data-aos="fade-up" data-aos-delay="100">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required>
+    </div>
+    <button type="submit">Sign In</button>
+</form>
+
+    </section>
+
+    <footer>
+        <p>© 2025 MediNexus AI. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+</body>
+</html> 

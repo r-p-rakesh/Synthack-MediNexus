@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+        }
+        .highlight {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #00e5ff;
+        }
+        .feature {
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .why, .what {
+            margin-top: 20px;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+        a {
+            color: #00e5ff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: rgba(0, 229, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: rgba(0, 229, 255, 0.2);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .result-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="result-box">
+            <h2 class="emoji">🔍 Prediction: <span class="highlight">{{ result }}</span></h2>
+            <h3 class="emoji">✅ Model Accuracy: {{ accuracy * 100 | round(2) }}%</h3>
+        </div>
+
+        {% if features %}
+        <div class="why">
+            <h3 class="emoji">💡 Key Factors in the Prediction:</h3>
+            <ul>
+                {% for f in features %}
+                <li class="feature">
+                    • <strong>{{ f.feature }}</strong>: <span style="color: {% if '+' in f.shap %}green{% else %}red{% endif %}">{{ f.shap }}</span> — Value: {{ f.value }}<br>
+                    {% if f.explanation %}
+                    <span class="emoji">🧠 Why:</span> <em>{{ f.explanation }}</em>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <br>
+        <a href="/">🔙 Go Back to Home</a>
+    </div>
+</body>
+</html>

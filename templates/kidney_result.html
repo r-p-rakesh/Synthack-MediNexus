@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidney Disease Prediction Result - MediNexus AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .result-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .result-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #00e5ff;
+            margin-bottom: 1rem;
+        }
+
+        .prediction-text {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .prediction-text.positive {
+            color: #ff4444;
+            border: 2px solid #ff4444;
+        }
+
+        .prediction-text.negative {
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .confidence-score {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .model-accuracy {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .feature-contributions {
+            margin-top: 2rem;
+        }
+
+        .contributions-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .contribution-list {
+            list-style: none;
+        }
+
+        .contribution-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .contribution-item:hover {
+            transform: translateX(10px);
+        }
+
+        .feature-name {
+            font-weight: 600;
+            color: #00e5ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-value {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-value.positive {
+            color: #ff4444;
+        }
+
+        .feature-value.negative {
+            color: #4CAF50;
+        }
+
+        .feature-description {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #00e5ff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .recommendations {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .recommendations-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .recommendations-list {
+            list-style: none;
+        }
+
+        .recommendation-item {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .recommendation-item::before {
+            content: "•";
+            color: #00e5ff;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .result-title {
+                font-size: 2rem;
+            }
+
+            .prediction-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="result-card">
+            <div class="result-header">
+                <h1 class="result-title">Kidney Disease Prediction Result</h1>
+            </div>
+
+            <div class="prediction-text {{ 'positive' if data.prediction == 1 else 'negative' }}">
+                {{ 'Kidney Disease Detected' if data.prediction == 1 else 'No Kidney Disease Detected' }}
+            </div>
+
+            <div class="confidence-score">
+                Confidence: {{ "%.2f"|format(data.confidence * 100) }}%
+            </div>
+
+            <div class="model-accuracy">
+                Model Accuracy: {{ "%.2f"|format(data.accuracy * 100) }}%
+            </div>
+
+            <div class="feature-contributions">
+                <h2 class="contributions-title">Key Contributing Factors</h2>
+                <ul class="contribution-list">
+                    {% for feature in data.feature_contributions %}
+                    <li class="contribution-item">
+                        <div class="feature-name">{{ feature.feature }}</div>
+                        <div class="feature-value {{ 'positive' if feature.value >= 0 else 'negative' }}">
+                            Impact: {{ "%.4f"|format(feature.value) }}
+                        </div>
+                        <div class="feature-description">
+                            {{ feature.description }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recommendations">
+                <h2 class="recommendations-title">Recommendations</h2>
+                <ul class="recommendations-list">
+                    {% if data.prediction == 1 %}
+                    <li class="recommendation-item">Schedule a consultation with a nephrologist as soon as possible</li>
+                    <li class="recommendation-item">Maintain a kidney-friendly diet low in sodium, potassium, and phosphorus</li>
+                    <li class="recommendation-item">Stay hydrated and monitor fluid intake</li>
+                    <li class="recommendation-item">Monitor blood pressure and blood sugar levels regularly</li>
+                    <li class="recommendation-item">Avoid medications that may harm the kidneys</li>
+                    {% else %}
+                    <li class="recommendation-item">Continue with regular health check-ups</li>
+                    <li class="recommendation-item">Maintain a balanced diet and stay hydrated</li>
+                    <li class="recommendation-item">Monitor kidney function indicators regularly</li>
+                    <li class="recommendation-item">Stay informed about kidney disease prevention</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="button-container">
+                <a href="{{ url_for('diagnose') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Diagnosis
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

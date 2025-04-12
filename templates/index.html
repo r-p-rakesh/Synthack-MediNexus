@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🩺 MediNexus AI - Your Health Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #00e5ff;
+        }
+
+       header {
+            background-color: rgba(15, 32, 39, 0.95);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(0.5px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+             height: 50px;
+            width: 120px;
+            object-fit: cover !important;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 1.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00e5ff;
+        }
+
+        .hero-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            color: #f0f0f0;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            background-color: #00e5ff;
+            color: #000;
+            text-decoration: none;
+            box-shadow: 0 0 5px #00e5ff, 0 0 20px #00e5ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        .features-section {
+            padding: 5rem 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00e5ff;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-description {
+            color: #f0f0f0;
+            line-height: 1.6;
+        }
+
+        .prediction-section {
+            padding: 5rem 2rem;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .prediction-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(0, 229, 255, 0.1);
+        }
+
+        .prediction-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #00e5ff;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #f0f0f0;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 3px rgba(0, 229, 255, 0.3);
+        }
+
+        .submit-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            background-color: #00e5ff;
+            color: #000;
+            box-shadow: 0 0 5px #00e5ff, 0 0 20px #00e5ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00e5ff;
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .result.success {
+            color: #00e5ff;
+        }
+
+        .result.error {
+            color: #e63946;
+        }
+
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background-color: #111;
+            color: #aaa;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .disease-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .disease-buttons .btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .disease-buttons .btn i {
+            font-size: 1.2rem;
+        }
+
+        .result-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .result-content {
+            margin-top: 1rem;
+        }
+
+        .prediction-text {
+            font-size: 1.2rem;
+            color: #00e5ff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-contributions {
+            margin-top: 1.5rem;
+        }
+
+        .feature-contributions h4 {
+            color: #fff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .contribution-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-name {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .contribution-value {
+            font-weight: 600;
+        }
+
+        .contribution-value.positive {
+            color: #00e5ff;
+        }
+
+        .contribution-value.negative {
+            color: #ff4444;
+        }
+
+        .feature-description {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="logo">
+        <img src="static/output-onlinepngtools.png" alt="MediNexus Logo" />
+      </a>
+      <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('diagnose') }}">Diagnose</a>
+        <a href="/diseases">Diseases</a>
+        <a href="/signin">Sign In</a>
+      </nav>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>AI-Powered Disease Prediction</h1>
+            <p>Select a disease to get started with prediction</p>
+            <div class="disease-buttons">
+                <a href="#breast-cancer" class="btn btn-glow">
+                    <i class="fas fa-female"></i>
+                    Breast Cancer Prediction
+                </a>
+                <a href="#kidney-disease" class="btn btn-glow">
+                    <i class="fas fa-kidneys"></i>
+                    Kidney Disease Prediction
+                </a>
+                <a href="#heart-disease" class="btn btn-glow">
+                    <i class="fas fa-heartbeat"></i>
+                    Heart Disease Prediction
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="breast-cancer" class="prediction-section" data-aos="fade-up">
+        <div class="prediction-grid">
+            <div class="prediction-card" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="prediction-title">Breast Cancer Prediction</h3>
+                <form id="breast-cancer-form" class="prediction-form">
+                    <div class="form-group">
+                        <label for="radius_mean">Radius Mean (mm)</label>
+                        <input type="number" step="0.01" id="radius_mean" name="radius_mean" required>
+                        <small>Mean radius of the tumor cells</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="texture_mean">Texture Mean</label>
+                        <input type="number" step="0.01" id="texture_mean" name="texture_mean" required>
+                        <small>Mean texture of the tumor cells</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="perimeter_mean">Perimeter Mean (mm)</label>
+                        <input type="number" step="0.01" id="perimeter_mean" name="perimeter_mean" required>
+                        <small>Mean perimeter of the tumor cells</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="area_mean">Area Mean (mm²)</label>
+                        <input type="number" step="0.01" id="area_mean" name="area_mean" required>
+                        <small>Mean area of the tumor cells</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="concavity_mean">Concavity Mean</label>
+                        <input type="number" step="0.00001" id="concavity_mean" name="concavity_mean" required>
+                        <small>Mean concavity of the tumor cells</small>
+                    </div>
+                    <button type="submit" class="predict-btn">Predict</button>
+                </form>
+                <div id="breast-cancer-result" class="result-container" style="display: none;">
+                    <h3>Prediction Result</h3>
+                    <div class="result-content">
+                        <p class="prediction-text"></p>
+                        <div class="feature-contributions">
+                            <h4>Feature Contributions</h4>
+                            <div class="contributions-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kidney-disease" class="prediction-section" data-aos="fade-up">
+        <div class="prediction-grid">
+            <div class="prediction-card" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="prediction-title">Kidney Disease Prediction</h3>
+                <form id="kidney-form">
+                    {% for col in columns_kidney %}
+                    <div class="form-group">
+                        <label for="{{ col }}">{{ col.replace('_', ' ').title() }}:</label>
+                        <input type="text" id="{{ col }}" name="{{ col }}" required placeholder="Enter {{ col.replace('_', ' ').title() }}">
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="submit-btn">Predict Kidney Disease</button>
+                </form>
+                <div id="kidney-result" class="result"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="heart-disease" class="prediction-section" data-aos="fade-up">
+        <div class="prediction-grid">
+            <div class="prediction-card" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="prediction-title">Heart Disease Prediction</h3>
+                <form id="heart-form" method="post" action="/predict_heart">
+                    {% for col in columns_heart %}
+                    <div class="form-group">
+                        <label for="{{ col }}">{{ col.replace('_', ' ').title() }}:</label>
+                        <input type="text" id="{{ col }}" name="{{ col }}" required placeholder="Enter {{ col.replace('_', ' ').title() }}">
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="submit-btn">Predict Heart Disease</button>
+                </form>
+                <div id="heart-result" class="result"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI-Powered Diagnosis</h3>
+                <p class="feature-description">
+                    Our advanced AI algorithms analyze your symptoms and medical data to provide accurate predictions.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Quick Results</h3>
+                <p class="feature-description">
+                    Get instant predictions and insights without long waiting times.
+                </p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Secure & Private</h3>
+                <p class="feature-description">
+                    Your health data is protected with enterprise-grade security measures.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 MediNexus AI. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+
+        // Helper function to handle form submission
+        async function handleFormSubmission(form, endpoint) {
+            try {
+                const formData = new FormData(form);
+                // Log the form data for debugging
+                console.log('Form data:', Object.fromEntries(formData));
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Encode the data for URL
+                const encodedData = encodeURIComponent(JSON.stringify(data));
+                window.location.href = `/result?data=${encodedData}`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred: ' + error.message);
+            }
+        }
+
+        // Add form submission handling for breast cancer prediction
+        document.getElementById('breast-cancer-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = parseFloat(value);
+            });
+
+            // Log the data being sent
+            console.log('Sending data:', data);
+
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'Predicting...';
+            submitButton.disabled = true;
+
+            fetch('/predict_breast', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error || 'Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                const resultContainer = document.getElementById('breast-cancer-result');
+                const predictionText = resultContainer.querySelector('.prediction-text');
+                const contributionsList = resultContainer.querySelector('.contributions-list');
+                
+                resultContainer.style.display = 'block';
+                predictionText.textContent = `Prediction: ${data.prediction === 1 ? 'Malignant (cancerous)' : 'Benign (non-cancerous)'} (Confidence: ${(data.confidence * 100).toFixed(2)}%)`;
+                
+                contributionsList.innerHTML = '';
+                data.feature_contributions.forEach(contribution => {
+                    const contributionElement = document.createElement('div');
+                    contributionElement.className = 'contribution-item';
+                    contributionElement.innerHTML = `
+                        <div class="feature-info">
+                            <span class="feature-name">${contribution.feature}</span>
+                            <span class="contribution-value ${contribution.value >= 0 ? 'positive' : 'negative'}">
+                                ${contribution.value >= 0 ? '+' : ''}${contribution.value.toFixed(4)}
+                            </span>
+                        </div>
+                        <div class="feature-description">${contribution.description}</div>
+                    `;
+                    contributionsList.appendChild(contributionElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while making the prediction: ' + error.message);
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            });
+        });
+
+        // Add form submission handling for kidney disease prediction
+        document.getElementById('kidney-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitButton = form.querySelector('.submit-btn');
+            const originalButtonText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Predicting...';
+            submitButton.disabled = true;
+
+            try {
+                // Collect form data
+                const formData = {};
+                const inputs = form.querySelectorAll('input[type="text"]');
+                inputs.forEach(input => {
+                    const value = input.value.trim();
+                    const featureName = input.id;
+
+                    if (['age', 'bp', 'sg', 'al', 'su', 'bgr', 'bu', 'sc', 'sod', 'pot', 'hemo', 'pcv', 'wc', 'rc'].includes(featureName)) {
+                        formData[featureName] = parseFloat(value);
+                    } else if (['rbc', 'pc', 'pcc', 'ba', 'htn', 'dm', 'cad', 'appet', 'pe', 'ane'].includes(featureName)) {
+                        formData[featureName] = value.toLowerCase() === 'yes' ? 1 : 0;
+                    }
+                });
+
+                // Log the data being sent
+                console.log('Sending data:', formData);
+
+                const response = await fetch('/predict_kidney', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/html'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Network response was not ok');
+                }
+
+                // Get the HTML content
+                const htmlContent = await response.text();
+                
+                // Create a new window or tab with the result
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(htmlContent);
+                newWindow.document.close();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while making the prediction: ' + error.message);
+            } finally {
+                // Reset button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Add form submission handling for heart disease prediction
+        document.getElementById('heart-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = this;
+            const submitButton = form.querySelector('.submit-btn');
+            const originalButtonText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Predicting...';
+            submitButton.disabled = true;
+
+            try {
+                // Collect form data
+                const formData = {};
+                const inputs = form.querySelectorAll('input[type="text"]');
+                inputs.forEach(input => {
+                    const value = input.value.trim();
+                    const featureName = input.id;
+
+                    if (['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'ca'].includes(featureName)) {
+                        formData[featureName] = parseFloat(value);
+                    } else if (['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'thal'].includes(featureName)) {
+                        formData[featureName] = parseInt(value);
+                    }
+                });
+
+                // Log the data being sent
+                console.log('Sending data:', formData);
+
+                const response = await fetch('/predict_heart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/html'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Network response was not ok');
+                }
+
+                // Get the HTML content
+                const htmlContent = await response.text();
+                
+                // Create a new window or tab with the result
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(htmlContent);
+                newWindow.document.close();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while making the prediction: ' + error.message);
+            } finally {
+                // Reset button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
